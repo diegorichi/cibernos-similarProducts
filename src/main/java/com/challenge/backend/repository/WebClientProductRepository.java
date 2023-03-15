@@ -2,8 +2,6 @@ package com.challenge.backend.repository;
 
 import com.challenge.backend.domain.Product;
 import org.reactivestreams.Publisher;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.annotation.Cacheable;
@@ -20,7 +18,6 @@ public class WebClientProductRepository implements ProductRepository {
 
     @Autowired
     private final WebClient webClient;
-    private final Logger log = LoggerFactory.getLogger(WebClientProductRepository.class);
 
     public WebClientProductRepository(WebClient webClient) {
         this.webClient = webClient;
@@ -39,7 +36,7 @@ public class WebClientProductRepository implements ProductRepository {
     public Flux<Product> getSimilarProducts(long id) {
         return getSimilarProductsIds(id)
                 .flatMap(
-                        productId -> getProductById(productId)
+                        this::getProductById
                 )
                 .switchIfEmpty(Flux.empty())
                 .onErrorComplete()
