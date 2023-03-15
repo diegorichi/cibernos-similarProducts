@@ -6,5 +6,5 @@ import reactor.core.publisher.Flux;
 public interface ProductRepository {
 
     Flux<Product> getSimilarProducts(long id);
-
 }
+
